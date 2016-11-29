@@ -2,7 +2,7 @@
 {
     using Microsoft.AspNet.Identity.EntityFramework;
     using System.Data.Entity;
-    using KrastevNewsSystem.Data.Migrations;
+    //using KrastevNewsSystem.Data.Migrations;
     using KrastevNewsSystem.Models;
 
     public class KrastevNewsSystemDbContext : IdentityDbContext
@@ -11,25 +11,25 @@
             : base("KrastevNewsSystemConnection")
         {}
 
-        //IDbSet<NewsApplicationUser> Users
-        //{
-        //    get;
-        //    set;
-        //}
-
-        IDbSet<NewsArticle> Articles
+        public IDbSet<NewsApplicationUser> Users
         {
             get;
             set;
         }
 
-        IDbSet<NewsArticleComment> ArticlesComments
+        public IDbSet<NewsArticle> Articles
         {
             get;
             set;
         }
 
-        IDbSet<ArticleKeyword> ArticlesKeywords
+        public IDbSet<NewsArticleComment> ArticlesComments
+        {
+            get;
+            set;
+        }
+
+        public IDbSet<ArticleKeyword> ArticlesKeywords
         {
             get;
             set;

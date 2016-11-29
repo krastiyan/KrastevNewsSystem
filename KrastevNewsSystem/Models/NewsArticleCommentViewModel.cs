@@ -13,7 +13,7 @@ namespace KrastevNewsSystem.Models
         [Display(Name = "Posted")]
         public DateTime PostedOn { get; set; }
 
-        public int CommentedPostID { get; set; }
+        public int CommentedNewsArticleID { get; set; }
 
         [Display(Name = "Commentor: ")]
         public string CommentAuthor { get; set; }
