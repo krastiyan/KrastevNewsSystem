@@ -16,8 +16,9 @@ namespace KrastevNewsSystem.Models
 
         public DateTime PostedOn { get; set; }
 
-        public virtual NewsArticle CommentedArticle { get; set; }
+        public virtual NewsArticle CommentedNewsArticle { get; set; }
 
+        public virtual NewsArticleComment CommentRepliedTo { get; set; }
         public virtual NewsApplicationUser CommentAuthor { get; set; }
     }
 }

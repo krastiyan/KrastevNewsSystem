@@ -1,0 +1,37 @@
+﻿@using KrastevNewsSystem.Models
+@{
+    ViewBag.Title = "Article Keywords List Page";
+}
+
+@model IEnumerable<ArticleKeyword>
+
+<h1>@ViewBag.Title</h1>
+
+<br />
+@Html.ActionLink("Add New Keyword", "Create", "ArticleKeywords", null, null)
+<br />
+@foreach (var keyword in Model.OrderBy(k => k.Keyword))
+{
+    DateTime currentDate = DateTime.Now;
+    bool isValid = (keyword.ValidFrom > currentDate && currentDate < keyword.ValidTo);
+    <div class="jumbotron">
+        <p>
+            <h3 class="text-center">@keyword.Keyword</h3>
+            <div>Is Story: @keyword.IsStoryKeyword</div>
+        </p>
+        @if (isValid)
+        {
+            <span>
+                @Html.ActionLink("Invalidate Keyword", "Invalidate", "ArticleKeywords", new { keywordID = keyword.KeywordId }, null)
+            </span>
+        }
+        else
+        {
+            <span>
+                @Html.ActionLink("Enable Keyword", "Enable", "ArticleKeywords", new { keywordID = keyword.KeywordId }, null)
+            </span>
+        }
+        <br />
+    </div>
+}
+@Html.ActionLink("Add New Keyword", "Create", "ArticleKeywords", null, null)

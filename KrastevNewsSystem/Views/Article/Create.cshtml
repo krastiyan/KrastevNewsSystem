@@ -1,0 +1,21 @@
+﻿@using KrastevNewsSystem.Models
+@model NewsArticleViewModel
+
+@{
+    ViewBag.Title = "Create an Article";
+}
+
+<h2>Create view shows</h2>
+@using (Html.BeginForm("Create", "Article", FormMethod.Post))
+{
+    <div>
+        @Html.LabelFor(model => model.Title)
+        @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+    </div>
+    <div>
+        @Html.LabelFor(model => model.Content)
+        @Html.TextBoxFor(model => model.Content, new { @class = "form-control" })
+    </div>
+    <input type="submit" label="Post that Article"/>
+ }
+

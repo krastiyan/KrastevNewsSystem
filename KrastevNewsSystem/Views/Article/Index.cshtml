@@ -1,0 +1,52 @@
+﻿@using KrastevNewsSystem.Models
+@{
+    ViewBag.Title = "All Articles List Page";
+
+}
+
+@model IEnumerable<NewsArticleViewModel>
+
+<h1>List of all articles follows...</h1>
+
+@foreach (var article in Model)
+{
+    <div class="jumbotron">
+        <h1 class="text-center">@article.Title</h1>
+        <div>Created by: @article.ArticleAuthor - goodman :)</div>
+        <p>
+            @article.Content
+        </p>
+        <br />
+        @Html.ActionLink("Comment article", "Create", "ArticleComment", new { commentedPostID = article.ArticleID }, null)
+
+        <br /><span>Comments on this article:</span><br />
+        @foreach (var comment in article.Comments)
+        {
+                if (comment.CommentRepliedTo != null)
+                {
+                <div>
+                    In reply to: @comment.CommentRepliedTo.CommentAuthor.UserName since: @comment.CommentRepliedTo.PostedOn
+                </div>
+                }
+                <div>
+                    @Html.LabelFor(c => comment.CommentAuthor)
+                    @Html.DisplayTextFor(c => comment.CommentAuthor.UserName)
+                    @*By @comment.CommentAuthor.UserName made @comment.PostedOn*@
+                    <br />
+                    @Html.LabelFor(c => comment.PostedOn)
+                    @Html.DisplayTextFor(c => comment.PostedOn)
+                </div>
+            <p>
+                @comment.Content
+            </p>
+            <div>
+                <span>
+                    @Html.ActionLink("Reply to Comment", "Reply", "ArticleComment", new { commentedPostID = article.ArticleID, commentID = comment.Id }, null)
+                </span>
+                <span>
+                    @Html.ActionLink("Delete Comment", "Delete", "ArticleComment", new { commentID = comment.Id }, null)
+                </span>
+            </div>
+        }
+    </div>
+}

@@ -1,0 +1,23 @@
+﻿@using KrastevNewsSystem.Models
+@model NewsArticleCommentViewModel
+
+@{
+    ViewBag.Title = "Comment that Article";
+}
+
+<h2>Create view shows</h2>
+@using (Html.BeginForm("Create", "ArticleComment", FormMethod.Post))
+{
+    <div>
+        @Html.HiddenFor(model => model.CommentAuthor)
+        @Html.HiddenFor(model => model.CommentedNewsArticleID)
+        @Html.LabelFor(model => model.CommentAuthor)
+        @Html.DisplayTextFor(model => model.CommentAuthor)
+    </div>
+    <div>
+        @Html.LabelFor(model => model.Content)
+        @Html.TextBoxFor(model => model.Content, new { @class = "form-control" })
+    </div>
+    <input type="submit" label="Do that Comment"/>
+ }
+

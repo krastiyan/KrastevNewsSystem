@@ -6,11 +6,22 @@ using System.Web.Mvc;
 
 namespace KrastevNewsSystem.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public ActionResult Index()
         {
-            return View();
+            
+            return View(this.PersistenceContext.Articles.Select(a =>
+                 new KrastevNewsSystem.Models.NewsArticleViewModel() {
+                     ArticleID = a.Id,
+                     Title = a.Title,
+                     ArticleAuthor = a.ArticleAuthor.UserName,
+                     PostedOn = a.PostedOn,
+                     Content = a.Content,
+                     Comments = a.Comments
+                 }
+            ).ToList()
+            );
         }
 
         public ActionResult About()

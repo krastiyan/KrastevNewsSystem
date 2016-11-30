@@ -1,0 +1,31 @@
+﻿@using KrastevNewsSystem.Models
+@model NewsArticleCommentViewModel
+
+@{
+    ViewBag.Title = "Reply this Comment";
+}
+
+<h2>Create view shows</h2>
+@using (Html.BeginForm("Reply", "ArticleComment", FormMethod.Post))
+{
+    <div>
+        @Html.LabelFor(model => model.CommentRepliedToID)
+        @Html.LabelFor(model => model.CommentRepliedToAuthor)
+        @Html.DisplayTextFor(model => model.CommentRepliedToAuthor)
+        @Html.LabelFor(model => model.CommentRepliedToDate)
+        @Html.DisplayTextFor(model => model.CommentRepliedToDate)
+    </div>
+    <div>
+        @Html.HiddenFor(model => model.CommentAuthor)
+        @Html.HiddenFor(model => model.CommentedNewsArticleID)
+        @Html.HiddenFor(model => model.CommentRepliedToID)
+        @Html.LabelFor(model => model.CommentAuthor)
+        @Html.DisplayTextFor(model => model.CommentAuthor)
+    </div>
+    <div>
+        @Html.LabelFor(model => model.Content)
+        @Html.TextBoxFor(model => model.Content, new { @class = "form-control" })
+    </div>
+    <input type="submit" label="Reply that Comment"/>
+ }
+

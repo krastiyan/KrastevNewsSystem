@@ -1,0 +1,25 @@
+﻿@using KrastevNewsSystem.Models
+@model ArticleKeywordViewModel
+
+@{
+    ViewBag.Title = "Create new Article Keyword";
+}
+
+<h2>Create view shows</h2>
+@using (Html.BeginForm("Create", "ArticleKeywords", FormMethod.Post))
+{
+    <div>
+        @Html.LabelFor(model => model.Keyword)
+        @Html.TextBoxFor(model => model.Keyword, new { @class = "form-control" })
+    </div>
+    <div>
+        @Html.LabelFor(model => model.IsStoryKeyword)
+        @Html.CheckBoxFor(model => model.IsStoryKeyword, new { @class = "form-control" })
+    </div>
+    <div>
+        @Html.LabelFor(model => model.ValidFrom)
+        @Html.TextBoxFor(model => model.ValidFrom, new { @class = "form-control" })
+    </div>
+    <input type="submit" label="Create this Keyword"/>
+ }
+

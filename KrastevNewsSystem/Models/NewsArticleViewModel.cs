@@ -22,5 +22,7 @@ namespace KrastevNewsSystem.Models
 
         [Display(Name = "Article Comments")]
         public ICollection<NewsArticleComment> Comments { get; set; }
+
+        public ICollection<ArticleKeyword> AssignedKeywords { get; set; }
     }
 }
