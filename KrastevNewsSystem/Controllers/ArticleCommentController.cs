@@ -1,4 +1,5 @@
-﻿using KrastevNewsSystem.Data;
+﻿using AutoMapper;
+using KrastevNewsSystem.Data;
 using KrastevNewsSystem.Models;
 using System;
 using System.Collections.Generic;
@@ -27,17 +28,19 @@ namespace KrastevNewsSystem.Controllers
         [HttpPost]
         public ActionResult Create(NewsArticleCommentViewModel theComment)
         {
-            var user = this.DataManager.Users.All().FirstOrDefault(u => u.UserName == theComment.CommentAuthor);
-            var article = this.DataManager.Articles.All().FirstOrDefault(p => p.Id == theComment.CommentedNewsArticleID);
-            var commentReplied = this.DataManager.ArticlesComments.All().FirstOrDefault(c => c.Id == theComment.CommentRepliedToID);
-            NewsArticleComment comment = new Models.NewsArticleComment
-            {
-                Content = theComment.Content,
-                CommentedNewsArticle = article,
-                CommentRepliedTo = commentReplied,
-                CommentAuthor = user,
-                PostedOn = DateTime.Now
-            };
+            //var user = this.DataManager.Users.All().FirstOrDefault(u => u.UserName == theComment.CommentAuthor);
+            //var article = this.DataManager.Articles.All().FirstOrDefault(p => p.Id == theComment.CommentedNewsArticleID);
+            //var commentReplied = this.DataManager.ArticlesComments.All().FirstOrDefault(c => c.Id == theComment.CommentRepliedToID);
+            NewsArticleComment comment = Mapper.Map<NewsArticleComment>(theComment);
+            comment.PostedOn = DateTime.Now;
+            //    new Models.NewsArticleComment
+            //{
+            //    Content = theComment.Content,
+            //    CommentedNewsArticle = article,
+            //    CommentRepliedTo = commentReplied,
+            //    CommentAuthor = user,
+            //    PostedOn = DateTime.Now
+            //};
 
             this.DataManager.ArticlesComments.Add(comment);
             this.DataManager.SaveChanges();
