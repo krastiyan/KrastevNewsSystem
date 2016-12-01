@@ -19,6 +19,7 @@
     <div>
         @Html.LabelFor(model => model.ValidFrom)
         @Html.TextBoxFor(model => model.ValidFrom, new { @class = "form-control" })
+        @Html.HiddenFor(model => model.ValidTo)
     </div>
     <input type="submit" label="Create this Keyword"/>
  }

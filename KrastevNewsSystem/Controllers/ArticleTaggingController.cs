@@ -1,4 +1,5 @@
-﻿using KrastevNewsSystem.Models;
+﻿using KrastevNewsSystem.Data;
+using KrastevNewsSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,15 @@ namespace KrastevNewsSystem.Controllers
 {
     public class ArticleTaggingController : BaseController
     {
+        public ArticleTaggingController(IKrastevNewsSystemPersister dataManager)
+            :base(dataManager)
+        { }
         /**
          * Should display ylist of all keywrods in DB no matter if valid
          **/
         public ActionResult Index(NewsArticleViewModel theArticle)
         {
-            var article = this.PersistenceContext.Articles.FirstOrDefault(a => a.Id == theArticle.ArticleID);
+            var article = this.DataManager.Articles.All().FirstOrDefault(a => a.Id == theArticle.ArticleID);
             ICollection<ArticleKeywordViewModel> keywords = article.AssignedKeywords.Select(k =>
             new ArticleKeywordViewModel()
             {
@@ -34,9 +38,9 @@ namespace KrastevNewsSystem.Controllers
         [HttpGet]
         public ActionResult AddKeywrodToArticle(NewsArticleViewModel theArticle)
         {
-            var article = this.PersistenceContext.Articles.FirstOrDefault(a => a.Id == theArticle.ArticleID);
+            var article = this.DataManager.Articles.All().FirstOrDefault(a => a.Id == theArticle.ArticleID);
             DateTime currentDate = DateTime.Now;
-            ICollection<ArticleKeyword> nonArticleKeywords = this.PersistenceContext.ArticlesKeywords.Where(k =>
+            ICollection<ArticleKeyword> nonArticleKeywords = this.DataManager.ArticlesKeywords.All().Where(k =>
             k.ValidFrom < currentDate && k.ValidTo > currentDate && !article.AssignedKeywords.Contains(k)
             )
             .ToList();
@@ -55,11 +59,11 @@ namespace KrastevNewsSystem.Controllers
         [HttpPost]
         public ActionResult AddKeywrodToArticle(ArticleKeywordViewModel theKeyword, NewsArticleViewModel theArticle)
         {
-            var article = this.PersistenceContext.Articles.FirstOrDefault(a => a.Id == theArticle.ArticleID);
-            var keyword = this.PersistenceContext.ArticlesKeywords.FirstOrDefault(k => k.KeywordId == theKeyword.KeywordId);
+            var article = this.DataManager.Articles.All().FirstOrDefault(a => a.Id == theArticle.ArticleID);
+            var keyword = this.DataManager.ArticlesKeywords.All().FirstOrDefault(k => k.KeywordId == theKeyword.KeywordId);
             article.AssignedKeywords.Add(keyword);
             keyword.KeywordedArticles.Add(article);
-            this.PersistenceContext.SaveChanges();
+            this.DataManager.SaveChanges();
             return RedirectToAction("Index", "ArticleTagging");//ArticleTagging to be partial view controller?
         }
     }

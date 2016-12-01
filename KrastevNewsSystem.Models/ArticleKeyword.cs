@@ -21,7 +21,7 @@ namespace KrastevNewsSystem.Models
         public bool IsStoryKeyword { get; set; }
 
         public DateTime ValidFrom { get; set; }
-        public DateTime ValidTo { get; set; }
+        public DateTime? ValidTo { get; set; }
 
         public virtual ICollection<NewsArticle> KeywordedArticles { get; set; }
     }

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KrastevNewsSystem;
 using KrastevNewsSystem.Controllers;
+using KrastevNewsSystem.Data;
 
 namespace KrastevNewsSystem.Tests.Controllers
 {
@@ -16,7 +17,7 @@ namespace KrastevNewsSystem.Tests.Controllers
         public void Index()
         {
             // Arrange
-            HomeController controller = new HomeController();
+            HomeController controller = new HomeController(new KrastevNewsSystemDataPersister());
 
             // Act
             ViewResult result = controller.Index() as ViewResult;
@@ -29,7 +30,7 @@ namespace KrastevNewsSystem.Tests.Controllers
         public void About()
         {
             // Arrange
-            HomeController controller = new HomeController();
+            HomeController controller = new HomeController(new KrastevNewsSystemDataPersister());
 
             // Act
             ViewResult result = controller.About() as ViewResult;
@@ -42,7 +43,7 @@ namespace KrastevNewsSystem.Tests.Controllers
         public void Contact()
         {
             // Arrange
-            HomeController controller = new HomeController();
+            HomeController controller = new HomeController(new KrastevNewsSystemDataPersister());
 
             // Act
             ViewResult result = controller.Contact() as ViewResult;

@@ -22,14 +22,13 @@ namespace KrastevNewsSystem
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             //Configuring mappings between Data and View models
-            Mapper.Initialize(cfg => {
+            Mapper.Initialize(cfg =>
+            {
                 cfg.CreateMap<NewsArticle, NewsArticleViewModel>()
                     .ForMember(dest => dest.ArticleID,
                         opt => opt.MapFrom(src => src.Id))
                     .ForMember(dest => dest.ArticleAuthor,
                         opt => opt.MapFrom(src => src.ArticleAuthor.UserName))
-                    //.ForMember(dest => dest.Comments,
-                    //    opt => opt.UseValue(src.Coments))
                  ;
                 cfg.CreateMap<NewsArticleComment, NewsArticleCommentViewModel>()
                     .ForMember(dest => dest.CommentAuthor,
@@ -49,9 +48,36 @@ namespace KrastevNewsSystem
                             .ForMember(dest => dest.CommentRepliedToDate,
                             opt => opt.AllowNull())
                    ;
-                cfg.CreateMap<ArticleKeyword, ArticleKeywordViewModel>();
+                cfg.CreateMap<ArticleKeywordViewModel, ArticleKeyword>()
+                    .ForMember(dest => dest.KeywordedArticles,
+                        opt => opt.AllowNull())
+                    .ForMember(dest => dest.ValidTo,
+                        opt => opt.AllowNull())
+                    .ForSourceMember(src => src.IsKeywordValid,
+                        opt => opt.Ignore())
+                ;
+                cfg.CreateMap<ArticleKeyword, ArticleKeywordViewModel>()
+                    .ForMember(dest => dest.KeywordedArticles,
+                        opt => opt.AllowNull())
+                    .ForMember(dest => dest.ValidTo,
+                        opt => opt.AllowNull())
+                    .ForMember(dest => dest.IsKeywordValid,
+                        opt => opt.ResolveUsing<KeywordValidCustomResolver>())
+                    //.ReverseMap()
+                ;
+
             });
         }
-
     }
+
+    class KeywordValidCustomResolver : IValueResolver<ArticleKeyword, ArticleKeywordViewModel, bool>
+    {
+        public bool Resolve(ArticleKeyword source, ArticleKeywordViewModel destination, bool member, ResolutionContext context)
+        {
+            DateTime currentDate = DateTime.Now;
+            return (source.ValidFrom < currentDate &&
+                (source.ValidTo == null || source.ValidTo > currentDate));
+        }
+    }
+
 }

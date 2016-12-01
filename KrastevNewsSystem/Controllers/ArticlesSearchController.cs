@@ -4,18 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using KrastevNewsSystem.Data;
 
 namespace KrastevNewsSystem.Controllers
 {
     public class ArticlesSearchController : BaseController
     {
+        public ArticlesSearchController(IKrastevNewsSystemPersister dataManager) : base(dataManager)
+        {
+        }
+
         /**
-         * Index should display search page with free text search field and keywords dropdown listing all valid keywords
-         **/
+* Index should display search page with free text search field and keywords dropdown listing all valid keywords
+**/
         public ActionResult Index()
         {
             DateTime currentDate = DateTime.Now;
-            ICollection<ArticleKeyword> validArticleKeywords = this.PersistenceContext.ArticlesKeywords.Where(k =>
+            ICollection<ArticleKeyword> validArticleKeywords = this.DataManager.ArticlesKeywords.All().Where(k =>
             k.ValidFrom < currentDate && k.ValidTo > currentDate
             )
             .ToList();
@@ -41,7 +46,7 @@ namespace KrastevNewsSystem.Controllers
 
             if (keywrodsSearchTerms != null && keywrodsSearchTerms.Count() > 0)
             {
-                ICollection<ArticleKeyword> searchedKeywrods = this.PersistenceContext.ArticlesKeywords.Where(k =>
+                ICollection<ArticleKeyword> searchedKeywrods = this.DataManager.ArticlesKeywords.All().Where(k =>
                     keywrodsSearchTerms.Contains(k.Keyword)
                     /**
                      * No check of k validity made since in Where
@@ -70,7 +75,7 @@ namespace KrastevNewsSystem.Controllers
                 }
                 else
                 {
-                    foundArticles = this.PersistenceContext.Articles.Where(a =>
+                    foundArticles = this.DataManager.Articles.All().Where(a =>
                         freeTextSearchTerms.IsProperSubsetOf(a.Content.Split(splitCriteria, StringSplitOptions.RemoveEmptyEntries))
                         ).ToList();
                 }

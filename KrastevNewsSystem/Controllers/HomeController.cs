@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KrastevNewsSystem.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +9,13 @@ namespace KrastevNewsSystem.Controllers
 {
     public class HomeController : BaseController
     {
+        public HomeController(IKrastevNewsSystemPersister dataManager)
+            :base(dataManager)
+        { }
         public ActionResult Index()
         {
             
-            return View(this.PersistenceContext.Articles.Select(a =>
+            return View(this.DataManager.Articles.All().Select(a =>
                  new KrastevNewsSystem.Models.NewsArticleViewModel() {
                      ArticleID = a.Id,
                      Title = a.Title,

@@ -1,5 +1,7 @@
 ﻿using Microsoft.Owin;
+using Ninject;
 using Owin;
+using System.Reflection;
 
 [assembly: OwinStartupAttribute(typeof(KrastevNewsSystem.Startup))]
 namespace KrastevNewsSystem
@@ -9,6 +11,17 @@ namespace KrastevNewsSystem
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+        }
+
+        /// <summary>
+        /// Creates the kernel.
+        /// </summary>
+        /// <returns>the newly created kernel.</returns>
+        private static StandardKernel CreateKernel()
+        {
+            var kernel = new StandardKernel();
+            kernel.Load(Assembly.GetExecutingAssembly());
+            return kernel;
         }
     }
 }

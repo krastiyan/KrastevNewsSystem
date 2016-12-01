@@ -92,6 +92,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KrastevNewsSystem.Data\KrastevNewsSystem.Data.csproj">
+      <Project>{59A8B7D2-A2ED-4A54-84AB-E0E0AE6EB418}</Project>
+      <Name>KrastevNewsSystem.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KrastevNewsSystem\KrastevNewsSystem.csproj">
       <Project>{35EC13E7-21F7-42BE-BE04-CC3BF703BBB0}</Project>
       <Name>KrastevNewsSystem</Name>

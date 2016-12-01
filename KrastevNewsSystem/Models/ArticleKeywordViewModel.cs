@@ -17,9 +17,11 @@ namespace KrastevNewsSystem.Models
         public DateTime ValidFrom { get; set; }
 
         [Display(Name = "Valid until")]
-        public DateTime ValidTo { get; set; }
+        public DateTime? ValidTo { get; set; }
 
         [Display(Name = "Articles tagged")]
         public ICollection<NewsArticle> KeywordedArticles { get; set; }
+
+        public bool IsKeywordValid { get; set; }
     }
 }

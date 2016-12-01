@@ -1,4 +1,5 @@
-﻿using KrastevNewsSystem.Models;
+﻿using KrastevNewsSystem.Data;
+using KrastevNewsSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,9 @@ namespace KrastevNewsSystem.Controllers
 {
     public class ArticleCommentController : BaseController
     {
+        public ArticleCommentController(IKrastevNewsSystemPersister dataManager)
+            :base(dataManager)
+        { }
 
         [HttpGet]
         public ActionResult Create(int commentedPostID)
@@ -23,9 +27,9 @@ namespace KrastevNewsSystem.Controllers
         [HttpPost]
         public ActionResult Create(NewsArticleCommentViewModel theComment)
         {
-            var user = this.PersistenceContext.Users.FirstOrDefault(u => u.UserName == theComment.CommentAuthor);
-            var article = this.PersistenceContext.Articles.FirstOrDefault(p => p.Id == theComment.CommentedNewsArticleID);
-            var commentReplied = this.PersistenceContext.ArticlesComments.FirstOrDefault(c => c.Id == theComment.CommentRepliedToID);
+            var user = this.DataManager.Users.All().FirstOrDefault(u => u.UserName == theComment.CommentAuthor);
+            var article = this.DataManager.Articles.All().FirstOrDefault(p => p.Id == theComment.CommentedNewsArticleID);
+            var commentReplied = this.DataManager.ArticlesComments.All().FirstOrDefault(c => c.Id == theComment.CommentRepliedToID);
             NewsArticleComment comment = new Models.NewsArticleComment
             {
                 Content = theComment.Content,
@@ -35,8 +39,8 @@ namespace KrastevNewsSystem.Controllers
                 PostedOn = DateTime.Now
             };
 
-            this.PersistenceContext.ArticlesComments.Add(comment);
-            this.PersistenceContext.SaveChanges();
+            this.DataManager.ArticlesComments.Add(comment);
+            this.DataManager.SaveChanges();
 
             return RedirectToAction("Index", "Article");
         }
@@ -44,7 +48,7 @@ namespace KrastevNewsSystem.Controllers
         [HttpGet]
         public ActionResult Reply(int commentedPostID, int commentID)
         {
-            var repliedToComment = this.PersistenceContext.ArticlesComments.FirstOrDefault(c => c.Id == commentID);
+            var repliedToComment = this.DataManager.ArticlesComments.All().FirstOrDefault(c => c.Id == commentID);
 
             return View(new NewsArticleCommentViewModel()
             {
@@ -59,9 +63,9 @@ namespace KrastevNewsSystem.Controllers
         [HttpPost]
         public ActionResult Reply(NewsArticleCommentViewModel theComment)
         {
-            var user = this.PersistenceContext.Users.FirstOrDefault(u => u.UserName == theComment.CommentAuthor);
-            var article = this.PersistenceContext.Articles.FirstOrDefault(p => p.Id == theComment.CommentedNewsArticleID);
-            var repliedToComment = this.PersistenceContext.ArticlesComments.FirstOrDefault(c => c.Id == theComment.CommentRepliedToID);
+            var user = this.DataManager.Users.All().FirstOrDefault(u => u.UserName == theComment.CommentAuthor);
+            var article = this.DataManager.Articles.All().FirstOrDefault(p => p.Id == theComment.CommentedNewsArticleID);
+            var repliedToComment = this.DataManager.ArticlesComments.All().FirstOrDefault(c => c.Id == theComment.CommentRepliedToID);
 
             NewsArticleComment comment = new Models.NewsArticleComment
             {
@@ -72,8 +76,8 @@ namespace KrastevNewsSystem.Controllers
                 CommentRepliedTo = repliedToComment,
             };
 
-            this.PersistenceContext.ArticlesComments.Add(comment);
-            this.PersistenceContext.SaveChanges();
+            this.DataManager.ArticlesComments.Add(comment);
+            this.DataManager.SaveChanges();
 
             return RedirectToAction("Index", "Article");
         }
@@ -81,10 +85,10 @@ namespace KrastevNewsSystem.Controllers
         [HttpPost]
         public ActionResult Delete(int commentID)
         {
-            var comment = this.PersistenceContext.ArticlesComments.FirstOrDefault(c => c.Id == commentID);
+            var comment = this.DataManager.ArticlesComments.All().FirstOrDefault(c => c.Id == commentID);
 
-            this.PersistenceContext.ArticlesComments.Remove(comment);
-            this.PersistenceContext.SaveChanges();
+            this.DataManager.ArticlesComments.Delete(comment);
+            this.DataManager.SaveChanges();
 
             return RedirectToAction("Index", "Article");
         }
