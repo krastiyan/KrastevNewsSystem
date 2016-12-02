@@ -32,5 +32,8 @@
         }
 
         int SaveChanges();
+
+        IRepository<T> GetRepository<T>() where T : class;
+
     }
 }

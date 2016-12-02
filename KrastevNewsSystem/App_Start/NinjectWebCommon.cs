@@ -11,6 +11,8 @@ namespace KrastevNewsSystem.App_Start
     using Ninject;
     using Ninject.Web.Common;
     using Data;
+    using Services;
+    using Services.Contracts;
     public static class NinjectWebCommon 
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
@@ -64,6 +66,6 @@ namespace KrastevNewsSystem.App_Start
             kernel.Bind<IKrastevNewsSystemPersister>()
                 .To<KrastevNewsSystemDataPersister>()
                 .InRequestScope();
-        }        
+        }
     }
 }

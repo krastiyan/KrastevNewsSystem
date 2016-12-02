@@ -338,6 +338,10 @@
       <Project>{cad8f0f5-580a-4909-a2f5-a2589053c810}</Project>
       <Name>KrastevNewsSystem.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\KrastevNewsSystem.Services\KrastevNewsSystem.Services.csproj">
+      <Project>{6cdd5bd9-0348-4d42-944e-6dcb96ea8d42}</Project>
+      <Name>KrastevNewsSystem.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

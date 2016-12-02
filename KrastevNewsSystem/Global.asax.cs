@@ -32,6 +32,19 @@ namespace KrastevNewsSystem
                     .ForMember(dest => dest.ArticleAuthor,
                         opt => opt.MapFrom(src => src.ArticleAuthor.UserName))
                  ;
+                cfg.CreateMap<NewsArticleViewModel, NewsArticle>()
+                    .ForMember(dest => dest.Id,
+                        opt => opt.MapFrom(src => src.ArticleID))
+                    .ForMember(dest => dest.ArticleAuthor,
+                        opt => opt.ResolveUsing<UserFromUserNameCustomResolver, string>(src => src.ArticleAuthor)
+                        )
+                    .ForMember(dest => dest.PostedOn,
+                        opt => opt.ResolveUsing<DateCreatedCustomResolver, DateTime>(src => src.PostedOn))
+                   //Is below needed
+                    //.ForMember(dest => dest.Comments,
+                    //    opt => opt.AllowNull())
+                 ;
+
                 cfg.CreateMap<NewsArticleComment, NewsArticleCommentViewModel>()
                     .ForMember(dest => dest.CommentAuthor,
                         opt => opt.MapFrom(src => src.CommentAuthor.UserName))
@@ -62,12 +75,14 @@ namespace KrastevNewsSystem
                             .ForMember(dest => dest.CommentRepliedTo,
                             opt => opt.AllowNull())
                     .ForMember(dest => dest.PostedOn,
-                        opt => opt.AllowNull())
+                        opt => opt.ResolveUsing<DateCreatedCustomResolver, DateTime>(src => src.PostedOn))
                    ;
 
                 cfg.CreateMap<ArticleKeywordViewModel, ArticleKeyword>()
                     .ForMember(dest => dest.KeywordedArticles,
                         opt => opt.AllowNull())
+                    .ForMember(dest => dest.ValidFrom,
+                        opt => opt.ResolveUsing<DateCreatedCustomResolver, DateTime>(src => src.ValidFrom))
                     .ForMember(dest => dest.ValidTo,
                         opt => opt.AllowNull())
                     .ForSourceMember(src => src.IsKeywordValid,
@@ -96,15 +111,14 @@ namespace KrastevNewsSystem
         }
     }
 
-  //Should a custom resolver be used or set DatecCommented to Now in logic is more correct?
-    //class UserFromUserNameCustomResolver : IMemberValueResolver<object, object, DateTime, DateTime>
-    //{
-    //    public DateTime Resolve(object source, object destination, DateTime sourceMember, DateTime destinationMember, ResolutionContext context)
-    //    {
-    //        // logic here
-    //        return DateTime.Now;
-    //    }
-    //}
+    class DateCreatedCustomResolver : IMemberValueResolver<object, object, DateTime, DateTime>
+    {
+        public DateTime Resolve(object source, object destination, DateTime sourceMember, DateTime destinationMember, ResolutionContext context)
+        {
+            // Check for sourceMember!=null will allow date fields to be optional in creation forms
+            return (sourceMember!=null)?sourceMember:DateTime.Now;
+        }
+    }
 
     class UserFromUserNameCustomResolver : BaseController
         , IMemberValueResolver<object, object, string, NewsApplicationUser>

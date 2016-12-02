@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KrastevNewsSystem.Data", "K
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KrastevNewsSystem.Models", "KrastevNewsSystem.Models\KrastevNewsSystem.Models.csproj", "{CAD8F0F5-580A-4909-A2F5-A2589053C810}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KrastevNewsSystem.Services", "KrastevNewsSystem.Services\KrastevNewsSystem.Services.csproj", "{6CDD5BD9-0348-4D42-944E-6DCB96EA8D42}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{CAD8F0F5-580A-4909-A2F5-A2589053C810}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAD8F0F5-580A-4909-A2F5-A2589053C810}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAD8F0F5-580A-4909-A2F5-A2589053C810}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CDD5BD9-0348-4D42-944E-6DCB96EA8D42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CDD5BD9-0348-4D42-944E-6DCB96EA8D42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CDD5BD9-0348-4D42-944E-6DCB96EA8D42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CDD5BD9-0348-4D42-944E-6DCB96EA8D42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

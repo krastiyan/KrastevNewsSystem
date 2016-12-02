@@ -32,6 +32,7 @@ namespace KrastevNewsSystem.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Create(NewsArticleViewModel theArticle)
         {
             var user = this.DataManager.Users.All().FirstOrDefault(u => u.UserName == HttpContext.User.Identity.Name);
