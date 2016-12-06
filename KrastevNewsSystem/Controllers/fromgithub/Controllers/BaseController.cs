@@ -23,8 +23,6 @@ namespace KrastevNewsSystem.Controllers
         //    get;
         //    set;
         //}
-
-        //   Services would use dataManager on thier own and Base Controller needs not to worry about that
         public BaseController(IKrastevNewsSystemPersister dataManager)
         {
             this.DataManager = dataManager;

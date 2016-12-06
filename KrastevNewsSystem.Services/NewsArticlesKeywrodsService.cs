@@ -9,7 +9,7 @@ using KrastevNewsSystem.Data;
 
 namespace KrastevNewsSystem.Services
 {
-    class NewsArticlesKeywrodsService : BaseService<ArticleKeyword>, IArticleKeywrodsService
+    public class NewsArticlesKeywrodsService : BaseService<ArticleKeyword>, IArticleKeywrodsService
     {
         public NewsArticlesKeywrodsService(IKrastevNewsSystemPersister data) : base(data)
         {}

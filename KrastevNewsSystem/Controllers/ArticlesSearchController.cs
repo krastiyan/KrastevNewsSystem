@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using KrastevNewsSystem.Data;
+using System.Collections;
 
 namespace KrastevNewsSystem.Controllers
 {
@@ -34,6 +35,16 @@ namespace KrastevNewsSystem.Controllers
                 ValidTo = k.ValidTo
             }
             ));
+        }
+
+        public ActionResult SearchByCriteria(ISet<string> freeTextSearchTerms, ISet<string> keywrodsSearchTerms)
+        {
+            return RedirectToAction("Search",
+                new Dictionary<string, object>()
+                {
+                    { "freeTextSearchTerms", freeTextSearchTerms },
+                    { "keywrodsSearchTerms", keywrodsSearchTerms}
+                });
         }
 
         /**

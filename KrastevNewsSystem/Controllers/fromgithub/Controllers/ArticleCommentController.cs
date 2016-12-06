@@ -38,13 +38,10 @@ namespace KrastevNewsSystem.Controllers
         [Authorize]
         public ActionResult Create(NewsArticleCommentViewModel theComment)
         {
-            var user = this.DataManager.Users.All().FirstOrDefault(u => u.UserName == theComment.CommentAuthor);
-            var article = this.DataManager.Articles.All().FirstOrDefault(p => p.Id == theComment.CommentedNewsArticleID);
-            var commentReplied = this.DataManager.ArticlesComments.All().FirstOrDefault(c => c.Id == theComment.CommentRepliedToID);
+            //var user = this.DataManager.Users.All().FirstOrDefault(u => u.UserName == theComment.CommentAuthor);
+            //var article = this.DataManager.Articles.All().FirstOrDefault(p => p.Id == theComment.CommentedNewsArticleID);
+            //var commentReplied = this.DataManager.ArticlesComments.All().FirstOrDefault(c => c.Id == theComment.CommentRepliedToID);
             NewsArticleComment comment = Mapper.Map<NewsArticleComment>(theComment);
-            comment.CommentAuthor = user;
-            comment.CommentedNewsArticle = article;
-            comment.CommentRepliedTo = commentReplied;
             //comment.PostedOn = DateTime.Now;
             //    new Models.NewsArticleComment
             //{
@@ -65,14 +62,11 @@ namespace KrastevNewsSystem.Controllers
         [Authorize]
         public ActionResult Reply(NewsArticleCommentViewModel theComment)
         {
-            var user = this.DataManager.Users.All().FirstOrDefault(u => u.UserName == theComment.CommentAuthor);
-            var article = this.DataManager.Articles.All().FirstOrDefault(p => p.Id == theComment.CommentedNewsArticleID);
-            var repliedToComment = this.DataManager.ArticlesComments.All().FirstOrDefault(c => c.Id == theComment.CommentRepliedToID);
+            //var user = this.DataManager.Users.All().FirstOrDefault(u => u.UserName == theComment.CommentAuthor);
+            //var article = this.DataManager.Articles.All().FirstOrDefault(p => p.Id == theComment.CommentedNewsArticleID);
+            //var repliedToComment = this.DataManager.ArticlesComments.All().FirstOrDefault(c => c.Id == theComment.CommentRepliedToID);
 
             NewsArticleComment comment = Mapper.Map<NewsArticleComment>(theComment);
-            comment.CommentAuthor = user;
-            comment.CommentedNewsArticle = article;
-            comment.CommentRepliedTo = repliedToComment;
             //comment.PostedOn = DateTime.Now;
             //    new Models.NewsArticleComment
             //{

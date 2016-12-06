@@ -11,6 +11,7 @@ namespace KrastevNewsSystem.Services.Contracts
     {
         //IQueryable<NewsArticleComment> GetAll();
 
-        IOrderedQueryable<NewsArticleComment> GetByCommentedArticle(int articleID);
+        //IQueryable<NewsArticleComment> GetByCommentedArticle(int articleID);//Might not be needed
+        IQueryable<NewsArticleComment> GetByCommentAuthor(string authorUsername);
     }
 }

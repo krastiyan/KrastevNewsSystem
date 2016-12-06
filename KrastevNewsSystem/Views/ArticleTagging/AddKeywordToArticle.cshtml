@@ -1,0 +1,25 @@
+﻿@using KrastevNewsSystem.Models
+@{
+    ViewBag.Title = "Keywords to Add to this Article List";
+}
+
+@model IEnumerable<ArticleKeywordViewModel>
+
+<h1>@ViewBag.Title</h1>
+
+<br />
+@*@ArticleID = ViewBag.TheArticleID*@
+@foreach (var keyword in Model@*.OrderBy(k => k.Keyword)*@)
+{
+
+    <div class="jumbotron">
+        <p>
+            @*<k2>Keyword ID: @keyword.KeywordId</k2>*@
+            @*<h2>The Article ID: @ViewBag.TheArticleID</h2>*@
+            <h3 class="text-center">@keyword.Keyword</h3>
+            <div>Is Story: @keyword.IsStoryKeyword</div>
+            @Html.ActionLink("Tag With This Keyword", "AddThisKeywordToArticle", "ArticleTagging", new { theKeywordID = keyword.KeywordId, theArticleID = ViewBag.TheArticleID }, null)
+        </p>
+        <br />
+    </div>
+}

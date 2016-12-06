@@ -1,29 +1,27 @@
-﻿using KrastevNewsSystem.Data;
-using KrastevNewsSystem.Models;
+﻿using KrastevNewsSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using KrastevNewsSystem.Data;
 
 namespace KrastevNewsSystem.Controllers
 {
-    public class StoriesSearchController : BaseController
+    public class ArticlesSearchController : BaseController
     {
-        public StoriesSearchController(IKrastevNewsSystemPersister dataManager)
-            : base(dataManager)
-        { }
+        public ArticlesSearchController(IKrastevNewsSystemPersister dataManager) : base(dataManager)
+        {
+        }
 
         /**
-         * Index should display search page with free text search field and keywords dropdown listing all valid keywords
-         **/
+* Index should display search page with free text search field and keywords dropdown listing all valid keywords
+**/
         public ActionResult Index()
         {
             DateTime currentDate = DateTime.Now;
             ICollection<ArticleKeyword> validArticleKeywords = this.DataManager.ArticlesKeywords.All().Where(k =>
-            k.IsStoryKeyword && 
-            k.ValidFrom < currentDate 
-            && (k.ValidTo == null || k.ValidTo > currentDate)
+            k.ValidFrom < currentDate && k.ValidTo > currentDate
             )
             .ToList();
 

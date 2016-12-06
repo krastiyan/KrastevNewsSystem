@@ -17,6 +17,11 @@ namespace KrastevNewsSystem.App_Start
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
 
+        public static Bootstrapper TheBootstrapper { get
+            {
+                return bootstrapper;
+            } }
+
         /// <summary>
         /// Starts the application
         /// </summary>
@@ -65,6 +70,18 @@ namespace KrastevNewsSystem.App_Start
         {
             kernel.Bind<IKrastevNewsSystemPersister>()
                 .To<KrastevNewsSystemDataPersister>()
+                .InSingletonScope();
+            kernel.Bind<IUsersService>()
+                .To<NewsUsersService>()
+                .InRequestScope();
+            kernel.Bind<IArticlesService>()
+                .To<NewsArticlesService>()
+                .InRequestScope();
+            kernel.Bind<IArticleKeywrodsService>()
+                .To<NewsArticlesKeywrodsService>()
+                .InRequestScope();
+            kernel.Bind<IArticleCommentsService>()
+                .To<NewsArticlesCommentsService>()
                 .InRequestScope();
         }
     }

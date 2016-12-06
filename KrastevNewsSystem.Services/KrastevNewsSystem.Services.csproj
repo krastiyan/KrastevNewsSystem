@@ -63,6 +63,7 @@
     <Compile Include="Contracts\IArticlesService.cs" />
     <Compile Include="Contracts\IService.cs" />
     <Compile Include="Contracts\IUsersService.cs" />
+    <Compile Include="NewsArticlesCommentsService.cs" />
     <Compile Include="NewsArticlesKeywrodsService.cs" />
     <Compile Include="NewsArticlesService.cs" />
     <Compile Include="NewsUsersService.cs" />

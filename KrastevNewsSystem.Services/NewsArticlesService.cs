@@ -9,10 +9,17 @@ using KrastevNewsSystem.Data;
 
 namespace KrastevNewsSystem.Services
 {
-    class NewsArticlesService : BaseService<NewsArticle>, IArticlesService
+    public class NewsArticlesService : BaseService<NewsArticle>, IArticlesService
     {
         public NewsArticlesService(IKrastevNewsSystemPersister data) : base(data)
         {}
+
+        public void Add(NewsArticle entity, string userName)
+        {
+            var user = new NewsUsersService(base.Data).GetAll().FirstOrDefault(u => u.UserName == userName);
+
+            base.Add(entity);
+        }
 
         public IOrderedEnumerable<NewsArticle> GetAllTaggedWithKeyWords(ISet<string> keywrodsSearchTerms)
         {

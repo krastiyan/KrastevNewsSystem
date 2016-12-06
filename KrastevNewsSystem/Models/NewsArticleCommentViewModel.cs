@@ -17,13 +17,13 @@ namespace KrastevNewsSystem.Models
         public int CommentedNewsArticleID { get; set; }
 
         [Display(Name = "Reply to comment ")]
-        public int CommentRepliedToID { get; set; }
+        public int? CommentRepliedToID { get; set; }
 
         [Display(Name = "By: ")]
         public string CommentRepliedToAuthor { get; set; }
 
         [Display(Name = "Since: ")]
-        public DateTime CommentRepliedToDate { get; set; }
+        public DateTime? CommentRepliedToDate { get; set; }
 
         [Display(Name = "Commenter: ")]
         public string CommentAuthor { get; set; }

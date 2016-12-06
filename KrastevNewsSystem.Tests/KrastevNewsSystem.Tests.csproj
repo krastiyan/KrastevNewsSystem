@@ -93,8 +93,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KrastevNewsSystem.Data\KrastevNewsSystem.Data.csproj">
-      <Project>{59A8B7D2-A2ED-4A54-84AB-E0E0AE6EB418}</Project>
+      <Project>{59a8b7d2-a2ed-4a54-84ab-e0e0ae6eb418}</Project>
       <Name>KrastevNewsSystem.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KrastevNewsSystem.Services\KrastevNewsSystem.Services.csproj">
+      <Project>{6cdd5bd9-0348-4d42-944e-6dcb96ea8d42}</Project>
+      <Name>KrastevNewsSystem.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\KrastevNewsSystem\KrastevNewsSystem.csproj">
       <Project>{35EC13E7-21F7-42BE-BE04-CC3BF703BBB0}</Project>

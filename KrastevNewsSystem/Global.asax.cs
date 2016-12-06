@@ -40,9 +40,9 @@ namespace KrastevNewsSystem
                         )
                     .ForMember(dest => dest.PostedOn,
                         opt => opt.ResolveUsing<DateCreatedCustomResolver, DateTime>(src => src.PostedOn))
-                   //Is below needed
-                    //.ForMember(dest => dest.Comments,
-                    //    opt => opt.AllowNull())
+                 //Is below needed
+                 //.ForMember(dest => dest.Comments,
+                 //    opt => opt.AllowNull())
                  ;
 
                 cfg.CreateMap<NewsArticleComment, NewsArticleCommentViewModel>()
@@ -66,12 +66,17 @@ namespace KrastevNewsSystem
 
                 cfg.CreateMap<NewsArticleCommentViewModel, NewsArticleComment>()
                     .ForMember(dest => dest.CommentAuthor,
-                        opt => opt.ResolveUsing<UserFromUserNameCustomResolver, string>(src => src.CommentAuthor)
+                        opr => opr.Ignore()
+                        //opt => opt.ResolveUsing<UserFromUserNameCustomResolver, string>(src => src.CommentAuthor)
                         )
                     .ForMember(dest => dest.CommentedNewsArticle,
-                        opt => opt.ResolveUsing<ArticleFromIDCustomResolver, int>(src => src.CommentedNewsArticleID))
+                        opr => opr.Ignore()
+                        //opt => opt.ResolveUsing<ArticleFromIDCustomResolver, int>(src => src.CommentedNewsArticleID)
+                        )
                     .ForMember(dest => dest.CommentRepliedTo,
-                        opt => opt.ResolveUsing<CommentFromIDCustomResolver, int>(src => src.CommentRepliedToID))
+                        opr => opr.Ignore()
+                        //opt => opt.ResolveUsing<CommentFromIDCustomResolver, int?>(src => src.CommentRepliedToID)
+                        )
                             .ForMember(dest => dest.CommentRepliedTo,
                             opt => opt.AllowNull())
                     .ForMember(dest => dest.PostedOn,
@@ -116,14 +121,15 @@ namespace KrastevNewsSystem
         public DateTime Resolve(object source, object destination, DateTime sourceMember, DateTime destinationMember, ResolutionContext context)
         {
             // Check for sourceMember!=null will allow date fields to be optional in creation forms
-            return (sourceMember!=null)?sourceMember:DateTime.Now;
+            //return (sourceMember != null) ? sourceMember : DateTime.Now;
+            return DateTime.Now;
         }
     }
 
     class UserFromUserNameCustomResolver : BaseController
         , IMemberValueResolver<object, object, string, NewsApplicationUser>
     {
-        public UserFromUserNameCustomResolver():base(new KrastevNewsSystemDataPersister())
+        public UserFromUserNameCustomResolver() : base(new KrastevNewsSystemDataPersister())
         {
 
         }
@@ -149,13 +155,13 @@ namespace KrastevNewsSystem
     }
 
     class CommentFromIDCustomResolver : BaseController
-        , IMemberValueResolver<object, object, int, NewsArticleComment>
+        , IMemberValueResolver<object, object, int?, NewsArticleComment>
     {
         public CommentFromIDCustomResolver() : base(new KrastevNewsSystemDataPersister())
         {
 
         }
-        public NewsArticleComment Resolve(object source, object destination, int sourceMember, NewsArticleComment destinationMember, ResolutionContext context)
+        public NewsArticleComment Resolve(object source, object destination, int? sourceMember, NewsArticleComment destinationMember, ResolutionContext context)
         {
             // logic here
             return this.DataManager.ArticlesComments.All().FirstOrDefault(c => c.Id == sourceMember);

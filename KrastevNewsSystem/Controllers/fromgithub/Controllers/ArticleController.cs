@@ -13,8 +13,8 @@ namespace KrastevNewsSystem.Controllers
     {
 
         public ArticleController(IKrastevNewsSystemPersister dataManager)
-            : base(dataManager)
-        { }
+            :base(dataManager)
+        {}
         public ActionResult Index()
         {
             ICollection<NewsArticle> dbArticles = this.DataManager.Articles.All().ToList();

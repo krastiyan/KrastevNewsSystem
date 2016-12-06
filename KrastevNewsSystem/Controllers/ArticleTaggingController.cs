@@ -1,4 +1,5 @@
-﻿using KrastevNewsSystem.Data;
+﻿using AutoMapper;
+using KrastevNewsSystem.Data;
 using KrastevNewsSystem.Models;
 using System;
 using System.Collections.Generic;
@@ -11,14 +12,14 @@ namespace KrastevNewsSystem.Controllers
     public class ArticleTaggingController : BaseController
     {
         public ArticleTaggingController(IKrastevNewsSystemPersister dataManager)
-            :base(dataManager)
+            : base(dataManager)
         { }
         /**
          * Should display ylist of all keywrods in DB no matter if valid
          **/
-        public ActionResult Index(NewsArticleViewModel theArticle)
+        public ActionResult Index(int theArticleID)
         {
-            var article = this.DataManager.Articles.All().FirstOrDefault(a => a.Id == theArticle.ArticleID);
+            var article = this.DataManager.Articles.All().FirstOrDefault(a => a.Id == theArticleID);
             ICollection<ArticleKeywordViewModel> keywords = article.AssignedKeywords.Select(k =>
             new ArticleKeywordViewModel()
             {
@@ -32,39 +33,66 @@ namespace KrastevNewsSystem.Controllers
             )
             .ToList();
 
+            ViewBag.TheArticleID = theArticleID;
+
             return View(keywords);
         }
 
         [HttpGet]
-        public ActionResult AddKeywrodToArticle(NewsArticleViewModel theArticle)
+        public ActionResult AddKeywordToArticle(int theArticleID)
         {
-            var article = this.DataManager.Articles.All().FirstOrDefault(a => a.Id == theArticle.ArticleID);
+            var article = this.DataManager.Articles.All().FirstOrDefault(a => a.Id == theArticleID);
             DateTime currentDate = DateTime.Now;
-            ICollection<ArticleKeyword> nonArticleKeywords = this.DataManager.ArticlesKeywords.All().Where(k =>
-            k.ValidFrom < currentDate && k.ValidTo > currentDate && !article.AssignedKeywords.Contains(k)
-            )
-            .ToList();
-
-            return View(nonArticleKeywords.Select(k => new ArticleKeywordViewModel()
+            ICollection<ArticleKeyword> nonArticleKeywords = null;
+            if (article.AssignedKeywords.Count > 0)
             {
-                KeywordId = k.KeywordId,
-                Keyword = k.Keyword,
-                IsStoryKeyword = k.IsStoryKeyword,
-                ValidFrom = k.ValidFrom,
-                ValidTo = k.ValidTo
+                ICollection<int> articleKeywordsIDs = new List<int>(article.AssignedKeywords.Count());
+                foreach (var item in article.AssignedKeywords)
+                {
+                    articleKeywordsIDs.Add(item.KeywordId);
+                }
+                nonArticleKeywords = this.DataManager.ArticlesKeywords.All().Where(k =>
+                k.ValidFrom < currentDate &&
+                    (k.ValidTo == null || k.ValidTo > currentDate)
+                    && !articleKeywordsIDs.Contains(k.KeywordId)
+                )
+                .ToList();
             }
-            ));
+            else
+            {
+                nonArticleKeywords = this.DataManager.ArticlesKeywords.All().Where(k =>
+                k.ValidFrom < currentDate &&
+                    (k.ValidTo == null || k.ValidTo > currentDate)
+                )
+                .ToList();
+            }
+
+            ViewBag.TheArticleID = theArticleID;
+            ICollection<ArticleKeywordViewModel> result = nonArticleKeywords.Select(k => Mapper.Map<ArticleKeywordViewModel>(k)).ToList();
+            return View(result);
         }
 
-        [HttpPost]
-        public ActionResult AddKeywrodToArticle(ArticleKeywordViewModel theKeyword, NewsArticleViewModel theArticle)
+        [HttpGet]
+        public ActionResult AddThisKeywordToArticle(int theKeywordID, int theArticleID)
         {
-            var article = this.DataManager.Articles.All().FirstOrDefault(a => a.Id == theArticle.ArticleID);
-            var keyword = this.DataManager.ArticlesKeywords.All().FirstOrDefault(k => k.KeywordId == theKeyword.KeywordId);
+            var article = this.DataManager.Articles.All().FirstOrDefault(a => a.Id == theArticleID);
+            var keyword = this.DataManager.ArticlesKeywords.All().FirstOrDefault(k => k.KeywordId == theKeywordID);
             article.AssignedKeywords.Add(keyword);
             keyword.KeywordedArticles.Add(article);
             this.DataManager.SaveChanges();
-            return RedirectToAction("Index", "ArticleTagging");//ArticleTagging to be partial view controller?
+            return RedirectToAction("Index", "ArticleTagging", new { theArticleID = theArticleID });//ArticleTagging to be partial view controller?
+        }
+
+
+        [HttpGet]
+        public ActionResult UntagThisKeywordFromArticle(int theKeywordID, int theArticleID)
+        {
+            var article = this.DataManager.Articles.All().FirstOrDefault(a => a.Id == theArticleID);
+            var keyword = this.DataManager.ArticlesKeywords.All().FirstOrDefault(k => k.KeywordId == theKeywordID);
+            article.AssignedKeywords.Remove(keyword);
+            keyword.KeywordedArticles.Remove(article);
+            this.DataManager.SaveChanges();
+            return RedirectToAction("Index", "ArticleTagging", new { theArticleID = theArticleID });//ArticleTagging to be partial view controller?
         }
     }
 }

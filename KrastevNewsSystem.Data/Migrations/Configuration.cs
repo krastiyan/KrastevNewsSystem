@@ -13,7 +13,7 @@ namespace KrastevNewsSystem.Data.Migrations
             ContextKey = "KrastevNewsSystem.Data.KrastevNewsSystemDbContext";
         }
 
-        protected override void Seed(KrastevNewsSystem.Data.KrastevNewsSystemDbContext context)
+        protected override void Seed(KrastevNewsSystemDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

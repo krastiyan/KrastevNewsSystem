@@ -11,7 +11,7 @@ namespace KrastevNewsSystem.Controllers
     public class StoriesSearchController : BaseController
     {
         public StoriesSearchController(IKrastevNewsSystemPersister dataManager)
-            : base(dataManager)
+            :base(dataManager)
         { }
 
         /**
@@ -21,9 +21,7 @@ namespace KrastevNewsSystem.Controllers
         {
             DateTime currentDate = DateTime.Now;
             ICollection<ArticleKeyword> validArticleKeywords = this.DataManager.ArticlesKeywords.All().Where(k =>
-            k.IsStoryKeyword && 
-            k.ValidFrom < currentDate 
-            && (k.ValidTo == null || k.ValidTo > currentDate)
+            k.ValidFrom < currentDate && k.ValidTo > currentDate
             )
             .ToList();
 
