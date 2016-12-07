@@ -242,6 +242,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\SearchCriteriaViewModel.cs" />
     <Compile Include="Models\NewsArticleCommentViewModel.cs" />
     <Compile Include="Models\ArticleKeywordViewModel.cs" />
     <Compile Include="Models\NewsArticleViewModel.cs" />
@@ -322,6 +323,8 @@
     <Content Include="Views\ArticleTagging\Index.cshtml" />
     <Content Include="Views\ArticleTagging\AddKeywordToArticle.cshtml" />
     <Content Include="Views\ArticlesSearch\Search.cshtml" />
+    <Content Include="Views\StoriesSearch\Search.cshtml" />
+    <Content Include="Views\ArticlesSearch\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

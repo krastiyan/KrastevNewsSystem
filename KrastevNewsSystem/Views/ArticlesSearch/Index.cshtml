@@ -1,0 +1,28 @@
+﻿@using KrastevNewsSystem.Models
+@model SearchCriteriaViewModel
+
+@{
+    ViewBag.Title = "Enter Articles Search Criteria";
+}
+
+<h2>ViewBag.Title</h2>
+@using (Html.BeginForm("SearchViaForm", "ArticlesSearch", new { searchCriteria = Model }, FormMethod.Post))
+{
+    <div>
+        @Html.LabelFor(model => model.freeTextSearchCriteria)
+        @Html.TextBoxFor(model => model.freeTextSearchCriteria, new { @class = "form-control" })
+        @Html.LabelFor(model => model.selectableKeywords)
+        @*@Html.DropDownListFor(model => model.selectableKeywords, Model.selectableKeywords, new { @class = "form-control", multiple = "multiple" })*@
+        @*@Html.ListBox("Keywords tosearch by: ", Model.selectableKeywords as MultiSelectList
+            ,new { @class = "form-control", data_placeholder = "Choose Keywords..." }
+            )*@
+        @*@Html.ListBoxFor(model => model.keywordsIDs, Model.keywordsValues MultiSelectList
+       , new { @class = "form-control", data_placeholder = "Choose Keywords..." })*@
+
+@*        @Html.ListBoxFor(m => m.SelectedIDs, new MultiSelectList(@Model.Customers, "ID", "Name", @Model.SelectedIDs))*@
+        @Html.ListBoxFor(m => m.keywordsValues, new MultiSelectList(@Model.selectableKeywords, "value", "value", @Model.keywordsValues))
+
+    </div>
+    <input type="submit"/>
+ }
+

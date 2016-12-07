@@ -14,12 +14,14 @@
             <h3 class="text-center">@keyword.Keyword</h3>
             @*<div>Is Story: @keyword.IsStoryKeyword</div>*@
             @Html.ActionLink("All Story Articles",
-                            "SearchByCriteria",
+                            "SearchByKeyword",
                             "ArticlesSearch",
-                            new {
-                                    freeTextSearchTerms = new List<string>(),
-                                    keywrodsSearchTerms = new List<string>() { ""+keyword.KeywordId}
-                                }, null)
+                            //new {
+                            //    freeTextSearchTerms = new List<string>() { },
+                            //    keywrodsSearchTerms = new List<string>() { keyword.Keyword}
+                            //}
+                            new { keywordToSearch = keyword.Keyword }
+                            , null)
         </p>
         <br />
     </div>

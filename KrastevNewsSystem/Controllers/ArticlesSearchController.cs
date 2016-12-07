@@ -6,11 +6,18 @@ using System.Web;
 using System.Web.Mvc;
 using KrastevNewsSystem.Data;
 using System.Collections;
+using System.Linq.Expressions;
+using System.Web.Routing;
+using AutoMapper;
+using System.Text;
 
 namespace KrastevNewsSystem.Controllers
 {
     public class ArticlesSearchController : BaseController
     {
+        static char[] splitCriteria = new char[] { ' ', '\n', '\r', '\t' };
+        static string stringGlue = " ";
+
         public ArticlesSearchController(IKrastevNewsSystemPersister dataManager) : base(dataManager)
         {
         }
@@ -21,42 +28,86 @@ namespace KrastevNewsSystem.Controllers
         public ActionResult Index()
         {
             DateTime currentDate = DateTime.Now;
-            ICollection<ArticleKeyword> validArticleKeywords = this.DataManager.ArticlesKeywords.All().Where(k =>
-            k.ValidFrom < currentDate && k.ValidTo > currentDate
+            //ICollection<ArticleKeyword>
+            var validArticleKeywords = this.DataManager.ArticlesKeywords.All().Where(k =>
+            k.ValidFrom < currentDate && 
+            (k.ValidTo == null || k.ValidTo > currentDate)
             )
-            .ToList();
+            //.ToList()
+            ;
 
-            return View(validArticleKeywords.Select(k => new ArticleKeywordViewModel()
+            var wordsToSelect = validArticleKeywords.Select(l => new SelectableKeyword
+                                                            {
+                                                               id = l.KeywordId,
+                                                               value = l.Keyword
+                                                            }
+            ).ToList();
+
+            var keywordsIDsList = new List<int>();
+            var keywordsValuesList = new List<string>();
+            foreach (var item in wordsToSelect)
             {
-                KeywordId = k.KeywordId,
-                Keyword = k.Keyword,
-                IsStoryKeyword = k.IsStoryKeyword,
-                ValidFrom = k.ValidFrom,
-                ValidTo = k.ValidTo
+                keywordsIDsList.Add(item.id);
+                keywordsValuesList.Add(item.value);
             }
-            ));
+            //foreach (var word in validArticleKeywords)
+            //{
+            //    wordsToSelect.Add(word.Keyword);
+            //}
+
+            return View(new SearchCriteriaViewModel()
+            {
+                freeTextSearchCriteria = "",
+                selectableKeywords = wordsToSelect,
+                keywordsIDs = keywordsIDsList,
+                keywordsValues = keywordsValuesList
+                //validArticleKeywords.Select(k => new ArticleKeywordViewModel()
+                //{
+                //    KeywordId = k.KeywordId,
+                //    Keyword = k.Keyword,
+                //    IsStoryKeyword = k.IsStoryKeyword,
+                //    ValidFrom = k.ValidFrom,
+                //    ValidTo = k.ValidTo
+                //}
+                //).ToList()
+            }
+            );
         }
 
-        public ActionResult SearchByCriteria(ISet<string> freeTextSearchTerms, ISet<string> keywrodsSearchTerms)
+        [HttpPost]
+        public ActionResult SearchViaForm(SearchCriteriaViewModel searchCriteria)
+        {
+            StringBuilder builder = new StringBuilder();
+            foreach (var keyword in searchCriteria.keywordsValues)
+            {
+                builder.Append(keyword + stringGlue);
+            }
+            return RedirectToAction("Search",
+                new
+                {
+                    freeTextSearchTermsList = "",
+                    keywrodsSearchTermsList = builder.ToString()
+                });
+        }
+        public ActionResult SearchByKeyword(string keywordToSearch)
         {
             return RedirectToAction("Search",
-                new Dictionary<string, object>()
-                {
-                    { "freeTextSearchTerms", freeTextSearchTerms },
-                    { "keywrodsSearchTerms", keywrodsSearchTerms}
+                new { freeTextSearchTermsList = "",
+                       keywrodsSearchTermsList = keywordToSearch
                 });
         }
 
         /**
          * Should Search result view be partial one OR to let user go to Search menu when new search is needed?
          **/
-        [HttpPost]
-        public ActionResult Search(ISet<string> freeTextSearchTerms, ISet<string> keywrodsSearchTerms)
+        
+        public ActionResult Search(string freeTextSearchTermsList, string keywrodsSearchTermsList)
         {
             List<NewsArticle> result = null, foundArticles = null;
 
-            if (keywrodsSearchTerms != null && keywrodsSearchTerms.Count() > 0)
+            if (keywrodsSearchTermsList != null && keywrodsSearchTermsList.Length > 0)
             {
+                string[] keywrodsSearchTerms = keywrodsSearchTermsList.Split(splitCriteria, StringSplitOptions.RemoveEmptyEntries);
                 ICollection<ArticleKeyword> searchedKeywrods = this.DataManager.ArticlesKeywords.All().Where(k =>
                     keywrodsSearchTerms.Contains(k.Keyword)
                     /**
@@ -75,19 +126,18 @@ namespace KrastevNewsSystem.Controllers
                 result = foundArticles.Distinct().ToList();
             }
 
-            if (freeTextSearchTerms != null && freeTextSearchTerms.Count() > 0)
+            if (freeTextSearchTermsList != null && freeTextSearchTermsList.Count() > 0)
             {
-                char[] splitCriteria = new char[] { ' ', '\n', '\r', '\t' };
+                string[] freeTextSearchTerms = freeTextSearchTermsList.Split(splitCriteria, StringSplitOptions.RemoveEmptyEntries);
+                ISet<string> freeTextSearch = new HashSet<string>(freeTextSearchTerms);
                 if (result != null && result.Count() > 0)
                 {
-                    foundArticles = result.Where(a =>
-                        freeTextSearchTerms.IsProperSubsetOf(a.Content.Split(splitCriteria, StringSplitOptions.RemoveEmptyEntries))
+                    foundArticles = result.AsQueryable().Where(TextHasSearchedWords(freeTextSearch)
                         ).ToList();
                 }
                 else
                 {
-                    foundArticles = this.DataManager.Articles.All().Where(a =>
-                        freeTextSearchTerms.IsProperSubsetOf(a.Content.Split(splitCriteria, StringSplitOptions.RemoveEmptyEntries))
+                    foundArticles = this.DataManager.Articles.All().Where(TextHasSearchedWords(freeTextSearch)
                         ).ToList();
                 }
 
@@ -102,13 +152,15 @@ namespace KrastevNewsSystem.Controllers
                 return View();
             }
 
-            return View(result.Select(a => new NewsArticleViewModel()
-            {
-                ArticleID = a.Id,
-                Title = a.Title,
-                ArticleAuthor = a.ArticleAuthor.UserName,
-                PostedOn = a.PostedOn
-            }));
+            return View(result.Select(a => Mapper.Map<NewsArticleViewModel>(a)));
         }//HttpPost Search method end
+
+        /**
+         * Defines extension method for LINQ to be called in Where clause for NewsArticle entities
+         **/
+        public Expression<Func<NewsArticle, bool>> TextHasSearchedWords(ISet<string> searchTerms)
+        {
+            return a => a.Content.Length > 0 && searchTerms.All(t => a.Content.Contains(t));
+        }
     }
 }
