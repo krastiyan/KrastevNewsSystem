@@ -1,12 +1,12 @@
 ﻿@using KrastevNewsSystem.Models
 @{
-    ViewBag.Title = "All Articles List Page";
+    ViewBag.Title = "Articles List Page";
 
 }
 
 @model IEnumerable<NewsArticleViewModel>
 
-<h1>ViewBag.Title</h1>
+<h1>@ViewBag.Title</h1>
 
 @foreach (var article in Model)
 {
@@ -17,10 +17,18 @@
             @article.Content
         </p>
         <br />
-        @Html.ActionLink("View_Article_Keywrods", "Index", "ArticleTagging", new { theArticleID = article.ArticleID }, null)
+        @Html.LabelFor(a => article.AssignedKeywords)
+        @foreach (var item in article.AssignedKeywords)
+        {
+            <span>@item.Keyword </span>
+        }
+        <br/>
+        @Html.ActionLink("Change_Article_Tagging", "Index", "ArticleTagging", new { theArticleID = article.ArticleID }, null)
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
         @Html.ActionLink("Comment article", "Create", "ArticleComment", new { commentedPostID = article.ArticleID }, null)
 
-        <br /><span>Comments on this article:</span><br />
+        <br />
+        @Html.LabelFor(l => article.Comments)
         @foreach (var comment in article.Comments)
         {
                 if (comment.CommentRepliedTo != null)

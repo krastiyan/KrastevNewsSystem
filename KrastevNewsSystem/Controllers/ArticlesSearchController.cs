@@ -16,7 +16,7 @@ namespace KrastevNewsSystem.Controllers
     public class ArticlesSearchController : BaseController
     {
         static char[] splitCriteria = new char[] { ' ', '\n', '\r', '\t' };
-        static string stringGlue = " ";
+        static string keywordsSeparator = "~";
 
         public ArticlesSearchController(IKrastevNewsSystemPersister dataManager) : base(dataManager)
         {
@@ -28,48 +28,18 @@ namespace KrastevNewsSystem.Controllers
         public ActionResult Index()
         {
             DateTime currentDate = DateTime.Now;
-            //ICollection<ArticleKeyword>
-            var validArticleKeywords = this.DataManager.ArticlesKeywords.All().Where(k =>
-            k.ValidFrom < currentDate && 
-            (k.ValidTo == null || k.ValidTo > currentDate)
-            )
-            //.ToList()
-            ;
+            var validArticleKeywords = this.DataManager.ArticlesKeywords.All()
+                .Where(k =>
+                          k.ValidFrom < currentDate &&
+                          (k.ValidTo == null || k.ValidTo > currentDate)
+                        );
 
-            var wordsToSelect = validArticleKeywords.Select(l => new SelectableKeyword
-                                                            {
-                                                               id = l.KeywordId,
-                                                               value = l.Keyword
-                                                            }
-            ).ToList();
-
-            var keywordsIDsList = new List<int>();
-            var keywordsValuesList = new List<string>();
-            foreach (var item in wordsToSelect)
-            {
-                keywordsIDsList.Add(item.id);
-                keywordsValuesList.Add(item.value);
-            }
-            //foreach (var word in validArticleKeywords)
-            //{
-            //    wordsToSelect.Add(word.Keyword);
-            //}
+            var wordsToSelect = validArticleKeywords.Select(l => l.Keyword).ToList();
 
             return View(new SearchCriteriaViewModel()
             {
                 freeTextSearchCriteria = "",
-                selectableKeywords = wordsToSelect,
-                keywordsIDs = keywordsIDsList,
-                keywordsValues = keywordsValuesList
-                //validArticleKeywords.Select(k => new ArticleKeywordViewModel()
-                //{
-                //    KeywordId = k.KeywordId,
-                //    Keyword = k.Keyword,
-                //    IsStoryKeyword = k.IsStoryKeyword,
-                //    ValidFrom = k.ValidFrom,
-                //    ValidTo = k.ValidTo
-                //}
-                //).ToList()
+                keywordsValues = wordsToSelect
             }
             );
         }
@@ -78,36 +48,46 @@ namespace KrastevNewsSystem.Controllers
         public ActionResult SearchViaForm(SearchCriteriaViewModel searchCriteria)
         {
             StringBuilder builder = new StringBuilder();
-            foreach (var keyword in searchCriteria.keywordsValues)
-            {
-                builder.Append(keyword + stringGlue);
-            }
+            if (searchCriteria.keywordsValues != null && searchCriteria.keywordsValues.Count() > 0)
+                foreach (var keyword in searchCriteria.keywordsValues)
+                {
+                    builder.Append(keyword + keywordsSeparator);
+                }
+
             return RedirectToAction("Search",
                 new
                 {
-                    freeTextSearchTermsList = "",
+                    freeTextSearchTermsList = searchCriteria.freeTextSearchCriteria,
                     keywrodsSearchTermsList = builder.ToString()
                 });
         }
         public ActionResult SearchByKeyword(string keywordToSearch)
         {
             return RedirectToAction("Search",
-                new { freeTextSearchTermsList = "",
-                       keywrodsSearchTermsList = keywordToSearch
+                new
+                {
+                    freeTextSearchTermsList = "",
+                    keywrodsSearchTermsList = keywordToSearch
                 });
         }
 
         /**
          * Should Search result view be partial one OR to let user go to Search menu when new search is needed?
          **/
-        
+
         public ActionResult Search(string freeTextSearchTermsList, string keywrodsSearchTermsList)
         {
             List<NewsArticle> result = null, foundArticles = null;
 
             if (keywrodsSearchTermsList != null && keywrodsSearchTermsList.Length > 0)
             {
-                string[] keywrodsSearchTerms = keywrodsSearchTermsList.Split(splitCriteria, StringSplitOptions.RemoveEmptyEntries);
+                string[] keywrodsSearchTerms = keywrodsSearchTermsList.Split(new string[] { keywordsSeparator }, StringSplitOptions.RemoveEmptyEntries);
+                ////Below needed to normalize back complicated keywords like "Last Hour"
+                //for (int i =0; i< keywrodsSearchTerms.Count(); i++)
+                //{
+                //    keywrodsSearchTerms[i] = keywrodsSearchTerms[i].Replace(stringGlue, keywordsSeparator);
+                //}
+
                 ICollection<ArticleKeyword> searchedKeywrods = this.DataManager.ArticlesKeywords.All().Where(k =>
                     keywrodsSearchTerms.Contains(k.Keyword)
                     /**

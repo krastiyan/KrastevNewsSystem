@@ -11,10 +11,7 @@ namespace KrastevNewsSystem.Models
         [Display(Name = "Free text search criteria:")]
         public string freeTextSearchCriteria { get; set; }
 
-        [Display (Name = "Keywords to search by:")]
-        public List<SelectableKeyword> selectableKeywords { get; set; }
-
-        public List<int> keywordsIDs { get; set; }
+        [Display(Name = "Keywords to search by:")]
         public List<string> keywordsValues { get; set; }
     }
 

@@ -15,6 +15,12 @@ namespace KrastevNewsSystem.Controllers
         public ArticleController(IKrastevNewsSystemPersister dataManager)
             : base(dataManager)
         { }
+
+        [HttpPost]
+        public ActionResult Index(IEnumerable<NewsArticleViewModel> articlesInput)
+        {
+            return View(articlesInput);
+        }
         public ActionResult Index()
         {
             ICollection<NewsArticle> dbArticles = this.DataManager.Articles.All().ToList();
