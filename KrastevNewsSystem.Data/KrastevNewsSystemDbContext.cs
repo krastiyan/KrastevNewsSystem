@@ -35,18 +35,6 @@
             set;
         }
 
-        //IDbSet<Coordinate> Coordinates
-        //{
-        //    get;
-        //    set;
-        //}
-
-        //IDbSet<Event> Events
-        //{
-        //    get;
-        //    set;
-        //}
-
         public static KrastevNewsSystemDbContext Create()
         {
             return new KrastevNewsSystemDbContext();

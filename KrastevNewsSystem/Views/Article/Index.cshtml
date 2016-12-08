@@ -25,37 +25,10 @@
         <br/>
         @Html.ActionLink("Change_Article_Tagging", "Index", "ArticleTagging", new { theArticleID = article.ArticleID }, null)
         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        @Html.ActionLink("Comment article", "Create", "ArticleComment", new { commentedPostID = article.ArticleID }, null)
+        @Html.ActionLink("Comment article", "Create", "./UsersFeatures/NewsArticleComments", new { commentedPostID = article.ArticleID@*, Area = "UsersFeatures"*@ }, null)
 
         <br />
         @Html.LabelFor(l => article.Comments)
-        @foreach (var comment in article.Comments)
-        {
-                if (comment.CommentRepliedTo != null)
-                {
-                <div>
-                    In reply to: @comment.CommentRepliedTo.CommentAuthor.UserName since: @comment.CommentRepliedTo.PostedOn
-                </div>
-                }
-                <div>
-                    @Html.LabelFor(c => comment.CommentAuthor)
-                    @Html.DisplayTextFor(c => comment.CommentAuthor.UserName)
-                    @*By @comment.CommentAuthor.UserName made @comment.PostedOn*@
-                    <br />
-                    @Html.LabelFor(c => comment.PostedOn)
-                    @Html.DisplayTextFor(c => comment.PostedOn)
-                </div>
-            <p>
-                @comment.Content
-            </p>
-            <div>
-                <span>
-                    @Html.ActionLink("Reply to Comment", "Reply", "ArticleComment", new { commentedPostID = article.ArticleID, commentID = comment.Id }, null)
-                </span>
-                <span>
-                    @Html.ActionLink("Delete Comment", "Delete", "ArticleComment", new { commentID = comment.Id }, null)
-                </span>
-            </div>
-        }
+        @Html.Partial("_ArticleCommentsList", article.Comments)
     </div>
 }

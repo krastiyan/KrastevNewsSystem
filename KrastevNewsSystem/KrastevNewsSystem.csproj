@@ -226,6 +226,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\UsersFeatures\Controllers\NewsArticleCommentsController.cs" />
+    <Compile Include="Areas\UsersFeatures\Controllers\NewsArticlesController.cs" />
+    <Compile Include="Areas\UsersFeatures\Controllers\NewsArticlesKeywordsController.cs" />
+    <Compile Include="Areas\UsersFeatures\UsersFeaturesAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\StoriesSearchController.cs" />
     <Compile Include="Controllers\ArticlesSearchController.cs" />
@@ -263,6 +267,24 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Areas\UsersFeatures\Views\web.config" />
+    <Content Include="Areas\UsersFeatures\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\UsersFeatures\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\UsersFeatures\Views\NewsArticles\Create.cshtml" />
+    <Content Include="Areas\UsersFeatures\Views\NewsArticles\Delete.cshtml" />
+    <Content Include="Areas\UsersFeatures\Views\NewsArticles\Details.cshtml" />
+    <Content Include="Areas\UsersFeatures\Views\NewsArticles\Edit.cshtml" />
+    <Content Include="Areas\UsersFeatures\Views\NewsArticles\Index.cshtml" />
+    <Content Include="Areas\UsersFeatures\Views\NewsArticleComments\Create.cshtml" />
+    <Content Include="Areas\UsersFeatures\Views\NewsArticleComments\Delete.cshtml" />
+    <Content Include="Areas\UsersFeatures\Views\NewsArticleComments\Details.cshtml" />
+    <Content Include="Areas\UsersFeatures\Views\NewsArticleComments\Edit.cshtml" />
+    <Content Include="Areas\UsersFeatures\Views\NewsArticleComments\Index.cshtml" />
+    <Content Include="Areas\UsersFeatures\Views\NewsArticlesKeywords\Create.cshtml" />
+    <Content Include="Areas\UsersFeatures\Views\NewsArticlesKeywords\Delete.cshtml" />
+    <Content Include="Areas\UsersFeatures\Views\NewsArticlesKeywords\Details.cshtml" />
+    <Content Include="Areas\UsersFeatures\Views\NewsArticlesKeywords\Edit.cshtml" />
+    <Content Include="Areas\UsersFeatures\Views\NewsArticlesKeywords\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -325,10 +347,11 @@
     <Content Include="Views\ArticlesSearch\Search.cshtml" />
     <Content Include="Views\StoriesSearch\Search.cshtml" />
     <Content Include="Views\ArticlesSearch\Index.cshtml" />
+    <Content Include="Views\Shared\_ArticleCommentsList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\fromgithub\Controllers\" />
+    <Folder Include="Areas\UsersFeatures\Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

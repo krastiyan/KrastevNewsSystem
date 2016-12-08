@@ -29,7 +29,7 @@ namespace KrastevNewsSystem.Controllers
                 return View(new NewsArticleCommentViewModel()
                 {
                     CommentedNewsArticleID = commentedPostID,
-                    CommentAuthor = HttpContext.User.Identity.Name
+                    CommentAuthor = currentUserName
                 });
             }
         }
@@ -45,15 +45,6 @@ namespace KrastevNewsSystem.Controllers
             comment.CommentAuthor = user;
             comment.CommentedNewsArticle = article;
             comment.CommentRepliedTo = commentReplied;
-            //comment.PostedOn = DateTime.Now;
-            //    new Models.NewsArticleComment
-            //{
-            //    Content = theComment.Content,
-            //    CommentedNewsArticle = article,
-            //    CommentRepliedTo = commentReplied,
-            //    CommentAuthor = user,
-            //    PostedOn = DateTime.Now
-            //};
 
             this.DataManager.ArticlesComments.Add(comment);
             this.DataManager.SaveChanges();

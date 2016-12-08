@@ -17,6 +17,10 @@ namespace KrastevNewsSystem
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                //,
+                //namespaces: new[] { "KrastevNewsSystem.Areas.UsersFeatures.Controllers",
+                //                    "KrastevNewsSystem.Controllers"}
+
             );
         }
     }

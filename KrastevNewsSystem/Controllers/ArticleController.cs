@@ -16,11 +16,6 @@ namespace KrastevNewsSystem.Controllers
             : base(dataManager)
         { }
 
-        [HttpPost]
-        public ActionResult Index(IEnumerable<NewsArticleViewModel> articlesInput)
-        {
-            return View(articlesInput);
-        }
         public ActionResult Index()
         {
             ICollection<NewsArticle> dbArticles = this.DataManager.Articles.All().ToList();
@@ -42,7 +37,7 @@ namespace KrastevNewsSystem.Controllers
         public ActionResult Create(NewsArticleViewModel theArticle)
         {
             var user = this.DataManager.Users.All().FirstOrDefault(u => u.UserName == HttpContext.User.Identity.Name);
-            NewsArticle article = new Models.NewsArticle
+            NewsArticle article = new NewsArticle
             {
                 Title = theArticle.Title,
                 Content = theArticle.Content,

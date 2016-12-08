@@ -1,0 +1,62 @@
+﻿@model IEnumerable<KrastevNewsSystem.Models.ArticleKeywordViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Keyword)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsStoryKeyword)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ValidFrom)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ValidTo)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Keyword)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsStoryKeyword)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ValidFrom)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ValidTo)
+        </td>
+        <td>
+            @if (item.IsKeywordValid)
+            {
+                <span>
+                    @Html.ActionLink("Invalidate Keyword", "Invalidate", "NewsArticlesKeywords", new { keywordID = item.KeywordId }, null)
+                </span>
+            }
+            else
+            {
+                <span>
+                    @Html.ActionLink("Enable Keyword", "Enable", "NewsArticlesKeywords", new { keywordID = item.KeywordId }, null)
+                </span>
+            } |
+            @Html.ActionLink("Details", "Details", new { id=item.KeywordId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.KeywordId })
+        </td>
+    </tr>
+}
+
+</table>

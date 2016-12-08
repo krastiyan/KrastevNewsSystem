@@ -15,18 +15,7 @@ namespace KrastevNewsSystem.Controllers
         public ActionResult Index()
         {
 
-            return View(this.DataManager.Articles.All().Select(a =>
-                 new KrastevNewsSystem.Models.NewsArticleViewModel()
-                 {
-                     ArticleID = a.Id,
-                     Title = a.Title,
-                     ArticleAuthor = a.ArticleAuthor.UserName,
-                     PostedOn = a.PostedOn,
-                     Content = a.Content,
-                     Comments = a.Comments
-                 }
-            ).ToList()
-            );
+            return RedirectToAction("Index", "Article");
         }
 
         public ActionResult About()
