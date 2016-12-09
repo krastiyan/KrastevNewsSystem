@@ -1,16 +1,17 @@
-﻿@using KrastevNewsSystem.Models
+﻿@*@using KrastevNewsSystem.Models*@
 @{
     ViewBag.Title = "List of Keywords for this Article";
 }
 
-@model IEnumerable<ArticleKeywordViewModel>
+@model KrastevNewsSystem.Models.ArticleTaggingViewModel
+    @*//IEnumerable<ArticleKeywordViewModel>*@
 
 <h1>@ViewBag.Title</h1>
 
 <br />
 @Html.ActionLink("Tagg With New Keyword", "AddKeywordToArticle", "ArticleTagging", new { theArticleID = ViewBag.TheArticleID }, null)
 <br />
-@foreach (var keyword in Model)
+@foreach (var keyword in Model.taggsList)
 {
     <div class="jumbotron">
         <p>
@@ -22,3 +23,6 @@
     </div>
 }
 @Html.ActionLink("Tagg With New Keyword", "AddKeywordToArticle", "ArticleTagging", new { theArticleID = ViewBag.TheArticleID }, null)
+<br />
+<br />
+@Html.Partial("_ArticleData", Model.taggedArticle)

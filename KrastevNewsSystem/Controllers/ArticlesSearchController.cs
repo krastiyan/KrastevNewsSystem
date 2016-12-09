@@ -29,10 +29,11 @@ namespace KrastevNewsSystem.Controllers
         {
             DateTime currentDate = DateTime.Now;
             var validArticleKeywords = this.DataManager.ArticlesKeywords.All()
-                .Where(k =>
-                          k.ValidFrom < currentDate &&
-                          (k.ValidTo == null || k.ValidTo > currentDate)
-                        );
+                .Where(KeywordIsValid(currentDate));
+                        //k =>
+                        //k.ValidFrom < currentDate &&
+                        //(k.ValidTo == null || k.ValidTo > currentDate)
+                        //);
 
             var wordsToSelect = validArticleKeywords.Select(l => l.Keyword).ToList();
 
@@ -82,11 +83,6 @@ namespace KrastevNewsSystem.Controllers
             if (keywrodsSearchTermsList != null && keywrodsSearchTermsList.Length > 0)
             {
                 string[] keywrodsSearchTerms = keywrodsSearchTermsList.Split(new string[] { keywordsSeparator }, StringSplitOptions.RemoveEmptyEntries);
-                ////Below needed to normalize back complicated keywords like "Last Hour"
-                //for (int i =0; i< keywrodsSearchTerms.Count(); i++)
-                //{
-                //    keywrodsSearchTerms[i] = keywrodsSearchTerms[i].Replace(stringGlue, keywordsSeparator);
-                //}
 
                 ICollection<ArticleKeyword> searchedKeywrods = this.DataManager.ArticlesKeywords.All().Where(k =>
                     keywrodsSearchTerms.Contains(k.Keyword)

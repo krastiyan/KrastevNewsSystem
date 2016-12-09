@@ -1,0 +1,25 @@
+﻿@model KrastevNewsSystem.Models.NewsArticleViewModel
+
+<div class="jumbotron">
+    <h1 class="text-center">@Model.Title</h1>
+    <div>Created by: Model.ArticleAuthor - goodman :)</div>
+    <p>
+        @Model.Content
+    </p>
+    <br />
+    @Html.LabelFor(a => Model.AssignedKeywords)
+    @foreach (var item in Model.AssignedKeywords)
+    {
+        <span>@item.Keyword </span>
+    }
+    <br />
+    @Html.ActionLink("Change_Article_Tagging", "Index", "ArticleTagging", new { theArticleID = Model.ArticleID }, null)
+    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    @Html.ActionLink("Comment article", "Create", "./UsersFeatures/NewsArticleComments", new { commentedPostID = Model.ArticleID }, null)
+
+    <br />
+    <div class="text-center">
+        @Html.LabelFor(l => Model.Comments)
+        @Html.Partial("_ArticleCommentsList", new ViewDataDictionary() { { "ArticleComments", Model.Comments }, { "ArticleID", Model.ArticleID } })
+    </div>
+</div>

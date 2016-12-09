@@ -246,6 +246,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ArticleTaggingViewModel.cs" />
     <Compile Include="Models\SearchCriteriaViewModel.cs" />
     <Compile Include="Models\NewsArticleCommentViewModel.cs" />
     <Compile Include="Models\ArticleKeywordViewModel.cs" />
@@ -334,7 +335,6 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\ArticleKeywords\Index.cshtml" />
-    <Content Include="Views\ArticleComment\Needed_OR_NOT_Index.cshtml" />
     <Content Include="Views\StoriesSearch\Index.cshtml" />
     <Content Include="Views\LatestNews\Index.cshtml" />
     <Content Include="Views\Article\Create.cshtml" />
@@ -348,6 +348,7 @@
     <Content Include="Views\StoriesSearch\Search.cshtml" />
     <Content Include="Views\ArticlesSearch\Index.cshtml" />
     <Content Include="Views\Shared\_ArticleCommentsList.cshtml" />
+    <Content Include="Views\Shared\_ArticleData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

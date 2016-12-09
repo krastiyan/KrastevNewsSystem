@@ -18,12 +18,14 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
         public NewsArticleCommentsController(IKrastevNewsSystemPersister dataManager) : base(dataManager)
         { }
 
+        [Authorize]
         // GET: UsersFeatures/NewsArticleCommentsController
         public ActionResult Index()
         {
             return View(base.DataManager.ArticlesComments.All().ToList());
         }
 
+        [Authorize]
         // GET: UsersFeatures/NewsArticleCommentsController/Details/5
         public ActionResult Details(int? id)
         {
@@ -64,6 +66,7 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Create(NewsArticleCommentViewModel theComment)//[Bind(Include = "Id,Content,PostedOn")] 
         {
             if (ModelState.IsValid)
@@ -85,6 +88,7 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
             return View(theComment);
         }
 
+        [Authorize]
         // GET: UsersFeatures/NewsArticleCommentsController/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -103,6 +107,7 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
         // POST: UsersFeatures/NewsArticleCommentsController/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Content,PostedOn")] NewsArticleComment newsArticleComment)
@@ -116,6 +121,7 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
             return View(newsArticleComment);
         }
 
+        [Authorize]
         // GET: UsersFeatures/NewsArticleCommentsController/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -142,13 +148,5 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
             return RedirectToAction("Index");
         }
 
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        base.DataManager.Dispose();
-        //    }
-        //    base.Dispose(disposing);
-        //}
     }
 }

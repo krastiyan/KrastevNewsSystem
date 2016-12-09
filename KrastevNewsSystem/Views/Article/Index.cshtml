@@ -10,25 +10,5 @@
 
 @foreach (var article in Model)
 {
-    <div class="jumbotron">
-        <h1 class="text-center">@article.Title</h1>
-        <div>Created by: @article.ArticleAuthor - goodman :)</div>
-        <p>
-            @article.Content
-        </p>
-        <br />
-        @Html.LabelFor(a => article.AssignedKeywords)
-        @foreach (var item in article.AssignedKeywords)
-        {
-            <span>@item.Keyword </span>
-        }
-        <br/>
-        @Html.ActionLink("Change_Article_Tagging", "Index", "ArticleTagging", new { theArticleID = article.ArticleID }, null)
-        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        @Html.ActionLink("Comment article", "Create", "./UsersFeatures/NewsArticleComments", new { commentedPostID = article.ArticleID@*, Area = "UsersFeatures"*@ }, null)
-
-        <br />
-        @Html.LabelFor(l => article.Comments)
-        @Html.Partial("_ArticleCommentsList", article.Comments)
-    </div>
+    @Html.Partial("_ArticleData", article)
 }

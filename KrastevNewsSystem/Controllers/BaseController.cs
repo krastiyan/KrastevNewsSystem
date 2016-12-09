@@ -1,7 +1,9 @@
 ﻿using KrastevNewsSystem.Data;
+using KrastevNewsSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -31,5 +33,11 @@ namespace KrastevNewsSystem.Controllers
         }
 
         public IKrastevNewsSystemPersister DataManager { get; set; }
+
+        public static Expression<Func<ArticleKeyword, bool>> KeywordIsValid(DateTime compareDate)
+        {
+            return k => k.ValidFrom < compareDate &&
+                          (k.ValidTo == null || k.ValidTo > compareDate);
+        }
     }
 }

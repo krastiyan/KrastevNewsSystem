@@ -17,12 +17,14 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
         public NewsArticlesController(IKrastevNewsSystemPersister dataManager) : base(dataManager)
         { }
 
+        [Authorize]
         // GET: UsersFeatures/NewsArticles
         public ActionResult Index()
         {
             return View(base.DataManager.Articles.All().ToList());
         }
 
+        [Authorize]
         // GET: UsersFeatures/NewsArticles/Details/5
         public ActionResult Details(int? id)
         {
@@ -48,6 +50,7 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
         // POST: UsersFeatures/NewsArticles/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Title,Content,PostedOn")] NewsArticle newsArticle)
@@ -72,6 +75,7 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         // GET: UsersFeatures/NewsArticles/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -90,6 +94,7 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
         // POST: UsersFeatures/NewsArticles/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Title,Content,PostedOn")] NewsArticle newsArticle)
@@ -103,6 +108,7 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
             return View(newsArticle);
         }
 
+        [Authorize]
         // GET: UsersFeatures/NewsArticles/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -118,6 +124,7 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
             return View(newsArticle);
         }
 
+        [Authorize]
         // POST: UsersFeatures/NewsArticles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -129,13 +136,5 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
             return RedirectToAction("Index");
         }
 
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        base.DataManager.Dispose();
-        //    }
-        //    base.Dispose(disposing);
-        //}
     }
 }

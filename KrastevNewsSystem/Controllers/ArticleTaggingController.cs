@@ -17,6 +17,7 @@ namespace KrastevNewsSystem.Controllers
         /**
          * Should display ylist of all keywrods in DB no matter if valid
          **/
+        [Authorize]
         public ActionResult Index(int theArticleID)
         {
             var article = this.DataManager.Articles.All().FirstOrDefault(a => a.Id == theArticleID);
@@ -35,10 +36,16 @@ namespace KrastevNewsSystem.Controllers
 
             ViewBag.TheArticleID = theArticleID;
 
-            return View(keywords);
+            return View(new ArticleTaggingViewModel()
+            {
+                taggedArticle = Mapper.Map<NewsArticleViewModel>(article),
+                taggsList = keywords
+            }
+            );
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult AddKeywordToArticle(int theArticleID)
         {
             var article = this.DataManager.Articles.All().FirstOrDefault(a => a.Id == theArticleID);
@@ -51,20 +58,30 @@ namespace KrastevNewsSystem.Controllers
                 {
                     articleKeywordsIDs.Add(item.KeywordId);
                 }
-                nonArticleKeywords = this.DataManager.ArticlesKeywords.All().Where(k =>
-                k.ValidFrom < currentDate &&
-                    (k.ValidTo == null || k.ValidTo > currentDate)
-                    && !articleKeywordsIDs.Contains(k.KeywordId)
-                )
+                nonArticleKeywords = this.DataManager.ArticlesKeywords.All()
+                    .Where(KeywordIsValid(currentDate))
+                    .Where(k => !articleKeywordsIDs.Contains(k.KeywordId))
                 .ToList();
+                //&&
+                //KeywordIsValid(currentDate)
+                //k =>
+                //k.ValidFrom < currentDate &&
+                //    (k.ValidTo == null || k.ValidTo > currentDate)
+                //    && 
+                //!articleKeywordsIDs.Contains(k.KeywordId)
+                //)
+                //.ToList();
             }
             else
             {
-                nonArticleKeywords = this.DataManager.ArticlesKeywords.All().Where(k =>
-                k.ValidFrom < currentDate &&
-                    (k.ValidTo == null || k.ValidTo > currentDate)
-                )
+                nonArticleKeywords = this.DataManager.ArticlesKeywords.All().Where(
+                    KeywordIsValid(currentDate))
                 .ToList();
+                //    k =>
+                //k.ValidFrom < currentDate &&
+                //    (k.ValidTo == null || k.ValidTo > currentDate)
+                //)
+                //.ToList();
             }
 
             ViewBag.TheArticleID = theArticleID;
@@ -73,6 +90,7 @@ namespace KrastevNewsSystem.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult AddThisKeywordToArticle(int theKeywordID, int theArticleID)
         {
             var article = this.DataManager.Articles.All().FirstOrDefault(a => a.Id == theArticleID);
@@ -85,6 +103,7 @@ namespace KrastevNewsSystem.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public ActionResult UntagThisKeywordFromArticle(int theKeywordID, int theArticleID)
         {
             var article = this.DataManager.Articles.All().FirstOrDefault(a => a.Id == theArticleID);

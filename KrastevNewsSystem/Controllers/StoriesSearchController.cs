@@ -20,12 +20,15 @@ namespace KrastevNewsSystem.Controllers
         public ActionResult Index()
         {
             DateTime currentDate = DateTime.Now;
-            ICollection<ArticleKeyword> validArticleKeywords = this.DataManager.ArticlesKeywords.All().Where(k =>
-            k.IsStoryKeyword && 
-            k.ValidFrom < currentDate 
-            && (k.ValidTo == null || k.ValidTo > currentDate)
-            )
+            ICollection<ArticleKeyword> validArticleKeywords = this.DataManager.ArticlesKeywords.All()
+                .Where(KeywordIsValid(currentDate))
+                .Where(k => k.IsStoryKeyword)
             .ToList();
+            //&& 
+            //k.ValidFrom < currentDate 
+            //&& (k.ValidTo == null || k.ValidTo > currentDate)
+            //)
+            //.ToList();
 
             return View(validArticleKeywords.Select(k => new ArticleKeywordViewModel()
             {

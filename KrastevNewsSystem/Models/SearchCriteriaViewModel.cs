@@ -15,9 +15,4 @@ namespace KrastevNewsSystem.Models
         public List<string> keywordsValues { get; set; }
     }
 
-    public class SelectableKeyword
-    {
-        public int id { get; set; }
-        public string value { get; set; }
-    }
 }

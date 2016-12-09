@@ -19,6 +19,7 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
         {
         }
 
+        [Authorize]
         // GET: UsersFeatures/NewsArticlesKeywords
         public ActionResult Index()
         {
@@ -31,6 +32,7 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
             return View(keywords);
         }
 
+        [Authorize]
         // GET: UsersFeatures/NewsArticlesKeywords/Details/5
         public ActionResult Details(int? id)
         {
@@ -46,6 +48,7 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
             return View(articleKeyword);
         }
 
+        [Authorize]
         // GET: UsersFeatures/NewsArticlesKeywords/Create
         public ActionResult Create()
         {
@@ -55,6 +58,7 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
         // POST: UsersFeatures/NewsArticlesKeywords/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "KeywordId,Keyword,IsStoryKeyword,ValidFrom,ValidTo")] ArticleKeyword articleKeyword)
@@ -69,20 +73,22 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
             return View(articleKeyword);
         }
 
+        [Authorize]
         public ActionResult Invalidate(int keywordID)
         {
             ArticleKeyword keyword = this.DataManager.ArticlesKeywords.All().FirstOrDefault(kw => kw.KeywordId == keywordID);
-            keyword.ValidTo = DateTime.Now;//Will this update entity record in Database?
+            keyword.ValidTo = DateTime.Now;
             this.DataManager.SaveChanges();
 
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         public ActionResult Enable(int keywordID)
         {
             ArticleKeyword keyword = this.DataManager.ArticlesKeywords.All().FirstOrDefault(kw => kw.KeywordId == keywordID);
             DateTime currentDate = DateTime.Now;
-            keyword.ValidFrom = currentDate;//Will this update entity record in Database?
+            keyword.ValidFrom = currentDate;
             if (keyword.ValidTo < currentDate)
             {
                 keyword.ValidTo = null;
@@ -92,6 +98,7 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         // GET: UsersFeatures/NewsArticlesKeywords/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -110,6 +117,7 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
         // POST: UsersFeatures/NewsArticlesKeywords/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "KeywordId,Keyword,IsStoryKeyword,ValidFrom,ValidTo")] ArticleKeyword articleKeyword)
@@ -123,6 +131,7 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
             return View(articleKeyword);
         }
 
+        [Authorize]
         // GET: UsersFeatures/NewsArticlesKeywords/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -138,6 +147,7 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
             return View(articleKeyword);
         }
 
+        [Authorize]
         // POST: UsersFeatures/NewsArticlesKeywords/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -149,13 +159,5 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
             return RedirectToAction("Index");
         }
 
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        base.DataManager.Dispose();
-        //    }
-        //    base.Dispose(disposing);
-        //}
     }
 }
