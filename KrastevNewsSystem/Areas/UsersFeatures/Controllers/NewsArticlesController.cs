@@ -72,7 +72,7 @@ namespace KrastevNewsSystem.Areas.UsersFeatures.Controllers
             base.DataManager.Articles.Add(article);
             base.DataManager.Articles.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "./../Article");
         }
 
         [Authorize]
